@@ -22,12 +22,12 @@ with ui.sidebar(title="Filter controls"):
     ui.h6("Links")
     ui.a(
         "GitHub Source",
-        href="https://github.com/denisecase/cintel-07-tdash",
+        href="https://github.com/tsngh/cintel-07-tdash",
         target="_blank",
     )
     ui.a(
         "GitHub App",
-        href="https://denisecase.github.io/cintel-07-tdash/",
+        href="https://tsngh.github.io/cintel-07-tdash/",
         target="_blank",
     )
     ui.a(
@@ -85,7 +85,7 @@ with ui.layout_columns():
             )
 
     with ui.card(full_screen=True):
-        ui.card_header("Penguin da")
+        ui.card_header("Penguin data")
 
         @render.data_frame
         def summary_statistics():
