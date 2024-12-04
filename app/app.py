@@ -1,25 +1,28 @@
+#imports at the beginning 
 import seaborn as sns
 from faicons import icon_svg
-
+from shinyswatch import theme
 from shiny import reactive
 from shiny.express import input, render, ui
 import palmerpenguins 
 
+#dataframe ad load file here if needed
 df = palmerpenguins.load_penguins()
 
-ui.page_opts(title="Penguins dashboard", fillable=True)
+#create title and theme
+ui.page_opts(title="Penguins dashboard", fillable=True, theme=theme.lux)
 
-
+#sidebar formatting and labels
 with ui.sidebar(title="Filter controls"):
-    ui.input_slider("mass", "Mass", 2000, 6000, 6000)
-    ui.input_checkbox_group(
+    ui.input_slider("mass", "Mass", 2000, 6000, 6000) #slider mass input with label
+    ui.input_checkbox_group( #checkbos to select species
         "species",
         "Species",
         ["Adelie", "Gentoo", "Chinstrap"],
         selected=["Adelie", "Gentoo", "Chinstrap"],
     )
     ui.hr()
-    ui.h6("Links")
+    ui.h6("Links") #links on sidebar to github repos
     ui.a(
         "GitHub Source",
         href="https://github.com/tsngh/cintel-07-tdash",
@@ -47,7 +50,7 @@ with ui.sidebar(title="Filter controls"):
         target="_blank",
     )
 
-
+#selecting number of penguins 
 with ui.layout_column_wrap(fill=False):
     with ui.value_box(showcase=icon_svg("earlybirds")):
         "Number of penguins"
@@ -56,28 +59,28 @@ with ui.layout_column_wrap(fill=False):
         def count():
             return filtered_df().shape[0]
 
-    with ui.value_box(showcase=icon_svg("ruler-horizontal")):
+    with ui.value_box(showcase=icon_svg("ruler-horizontal")): #showing bill length
         "Average bill length"
 
         @render.text
         def bill_length():
-            return f"{filtered_df()['bill_length_mm'].mean():.1f} mm"
-
-    with ui.value_box(showcase=icon_svg("ruler-vertical")):
+            return f"{filtered_df()['bill_length_mm'].mean():.1f} mm" #average to one place
+ 
+    with ui.value_box(showcase=icon_svg("ruler-vertical")): #showing bill depth
         "Average bill depth"
 
         @render.text
         def bill_depth():
-            return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm"
+            return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm" #average to one place
 
 
 with ui.layout_columns():
     with ui.card(full_screen=True):
-        ui.card_header("Bill length and depth")
+        ui.card_header("Bill length and depth") #title based on selection above
 
         @render.plot
         def length_depth():
-            return sns.scatterplot(
+            return sns.scatterplot(  # axis label with theme and units
                 data=filtered_df(),
                 x="bill_length_mm",
                 y="bill_depth_mm",
@@ -88,7 +91,7 @@ with ui.layout_columns():
         ui.card_header("Penguin data")
 
         @render.data_frame
-        def summary_statistics():
+        def summary_statistics(): #datagrid labels/headings
             cols = [
                 "species",
                 "island",
@@ -101,7 +104,7 @@ with ui.layout_columns():
 
 #ui.include_css(app_dir / "styles.css")
 
-
+#reaftive calc for filtered penguins datafram
 @reactive.calc
 def filtered_df():
     filt_df = df[df["species"].isin(input.species())]
