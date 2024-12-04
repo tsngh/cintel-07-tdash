@@ -52,21 +52,21 @@ with ui.sidebar(title="Filter controls"):
 
 #selecting number of penguins 
 with ui.layout_column_wrap(fill=False):
-    with ui.value_box(showcase=icon_svg("earlybirds")):
+    with ui.value_box(showcase=icon_svg("earlybirds"), style="color:#0b5394;"):
         "Number of penguins"
 
         @render.text
         def count():
             return filtered_df().shape[0]
 
-    with ui.value_box(showcase=icon_svg("ruler-horizontal")): #showing bill length
+    with ui.value_box(showcase=icon_svg("ruler-horizontal"), style="color:#89055d;"): #showing bill length
         "Average bill length"
 
         @render.text
         def bill_length():
             return f"{filtered_df()['bill_length_mm'].mean():.1f} mm" #average to one place
  
-    with ui.value_box(showcase=icon_svg("ruler-vertical")): #showing bill depth
+    with ui.value_box(showcase=icon_svg("ruler-vertical"), style="color:#256969;"): #showing bill depth
         "Average bill depth"
 
         @render.text
@@ -76,7 +76,7 @@ with ui.layout_column_wrap(fill=False):
 
 with ui.layout_columns():
     with ui.card(full_screen=True):
-        ui.card_header("Bill length and depth") #title based on selection above
+        ui.card_header("Bill length and depth scatterplot") #title based on selection above
 
         @render.plot
         def length_depth():
